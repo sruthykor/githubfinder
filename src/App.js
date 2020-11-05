@@ -1,6 +1,6 @@
 import React, { Component, Fragment} from 'react';
 import 'materialize-css/dist/css/materialize.min.css';
-import {HashRouter as Router,Switch,Route} from 'react-router-dom'
+import {BrowserRouter as Router,Switch,Route} from 'react-router-dom'
 import Navbar from './components/layout/Navbar';
 //import './App.css';
  import Users from './components/users/Users';
@@ -9,8 +9,19 @@ import axios from 'axios';
  import Search from './components/users/Search';
 import Alert from './components/layout/Alert';
 import About from './components/pages/About';
- 
 
+ let githubClientId;
+let githubClientSecret;
+
+// if(process.env.NODE_ENV!=='production'){
+
+//   githubClientId=process.env.REACT_APP_GITHUB_CLIENT_ID;
+//   githubClientSecret=process.env.REACT_APP_GITHUB_CLIENT_SECRET;
+// }
+// else{
+//    githubClientId=process.env.GITHUB_CLIENT_ID;
+//   githubClientSecret=process.env.GITHUB_CLIENT_SECRET;
+// }
 class App extends Component {
   
   state = {
@@ -29,7 +40,7 @@ class App extends Component {
   searchUsers= async (text)=>{
     this.setState({ loading: true });
     const res = await axios.get(
-      `https://api.github.com/search/users?q=${text}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
+      `https://api.github.com/search/users?q=${text}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.GITHUB_CLIENT_SECRET}`
     );
     this.setState({ users: res.data.items, loading: false });
   }
@@ -38,7 +49,7 @@ class App extends Component {
   getUser=async(username)=>{
     this.setState({ loading: true });
     const res = await axios.get(
-      `https://api.github.com/users/${username}?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
+      `https://api.github.com/users/${username}?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.GITHUB_CLIENT_SECRET}`
     );
     this.setState({ user: res.data, loading: false });
   }
